@@ -1,0 +1,14 @@
+node_modules/
+.env
+.DS_Store
+*.log
+dist/
+*.tsbuildinfo
+.idea/
+.vscode/
+*.bak
+*.tmp
+*.swp
+*.swo
+*.lock
+coverage/
