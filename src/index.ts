@@ -9,7 +9,7 @@ const port = 3005;
 let icon: Buffer | null = null;
 let notFound: Buffer | null = null;
 try {
-  // icon = fs.readFileSync("assets/computer_monitor_18859.ico");
+  icon = fs.readFileSync("assets/computer_monitor_18859.ico");
   notFound = fs.readFileSync("src/PageNotFound.html");
 } catch (err) {
   console.log("Server unable to load required asset files. =(");
@@ -69,6 +69,11 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Hello, World!');
 });
 
+app.get("/favicon.ico", (req: Request, res: Response) => {
+  res.setHeader("Content-Type", "image/x-icon");
+  res.status(200).send(icon);
+});
+
 app.get('/pets', (req: Request, res: Response) => {
   res.json(pets);
 });
@@ -123,11 +128,15 @@ app.delete('/pet/:id', (req: Request, res: Response) => {
 
 app.get("/*notfound", (req: Request, res: Response) => {
   res.setHeader("Content-Type", "text/html; charset=utf-8");
+  res.status(404);
   res.send(notFound);
 });
 
+if (icon && notFound) {
+  app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+  });
+}
 
-
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
+export default app; // Export the app for testing purposes
+export { icon, notFound }; // Export the icon and notFound for testing purposes
